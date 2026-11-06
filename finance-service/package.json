@@ -1,0 +1,22 @@
+{
+  "name": "praticom-finance-service",
+  "version": "1.0.0",
+  "description": "Microsserviço Financeiro (lançamentos a pagar/receber e resumo) - Azure SQL",
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --env-file=.env src/server.js",
+    "seed": "node --env-file=.env scripts/seed.js",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@azure/service-bus": "^7.9.5",
+    "express": "^4.21.2",
+    "mssql": "^11.0.1",
+    "swagger-ui-express": "^5.0.1"
+  }
+}
