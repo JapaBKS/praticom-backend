@@ -32,7 +32,7 @@ SQL_ADMIN=praticomadmin
 SQL_PASSWORD="Pr@$(openssl rand -hex 12)"
 
 step "Grupo de recursos e plano ($RG / $PLAN em $LOC)"
-az group create -n "$RG" -l "$LOC" -o none
+exists az group show -n "$RG" || az group create -n "$RG" -l "$LOC" -o none
 if ! exists az appservice plan show -g "$RG" -n "$PLAN"; then
   az appservice plan create -g "$RG" -n "$PLAN" -l "$LOC" --is-linux --sku F1 -o none
 fi
