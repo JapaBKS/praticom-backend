@@ -4,16 +4,16 @@ Dois microsserviços independentes, cada um com o **próprio banco de dados** (*
 
 | Microsserviço | Domínio | Banco | Publicado em (Azure Web App) | Swagger |
 |---|---|---|---|---|
-| [`market-service`](market-service) | Mercadinho: produtos, estoque, PDV e vendas | **MongoDB Atlas** (Free Tier) | https://SEU-MARKET.azurewebsites.net | `/docs` |
-| [`finance-service`](finance-service) | Financeiro: lançamentos, baixa, resumo e inadimplência | **Azure SQL Database** | https://SEU-FINANCE.azurewebsites.net | `/docs` |
+| [`market-service`](market-service) | Mercadinho: produtos, estoque, PDV e vendas | **MongoDB Atlas** (Free Tier) | https://praticom-market-dd687f.azurewebsites.net | `/docs` |
+| [`finance-service`](finance-service) | Financeiro: lançamentos, baixa, resumo e inadimplência | **Azure SQL Database** | https://praticom-finance-dd687f.azurewebsites.net | `/docs` |
 
 | | Endereço |
 |---|---|
-| 🌐 Site (Azure Storage, site estático) | https://SEU-SITE.z1.web.core.windows.net |
-| 🔀 Gateway/BFF | https://SEU-GATEWAY.azurewebsites.net/docs |
+| 🌐 Site (Azure Storage, site estático) | https://praticomfrontdd687f.z1.web.core.windows.net |
+| 🔀 Gateway/BFF | https://praticom-gateway-dd687f.azurewebsites.net/docs |
 | 🎥 Vídeo de apresentação (YouTube, não listado) | https://youtu.be/SEU-VIDEO |
-| 📦 Repositório do frontend | https://github.com/SEU-USUARIO/praticom-frontend |
-| 📦 Repositório do Gateway/BFF | https://github.com/SEU-USUARIO/praticom-gateway-bff |
+| 📦 Repositório do frontend | https://github.com/JapaBKS/praticom-frontend |
+| 📦 Repositório do Gateway/BFF | https://github.com/JapaBKS/praticom-gateway-bff |
 
 **Alunos:** veja [GRUPO.md](GRUPO.md).
 
