@@ -109,7 +109,7 @@ done
 # e o sucesso é confirmado pelo endpoint de saúde do próprio serviço.
 deploy() { # deploy <pasta> <webapp> <caminho-health> <nome-do-servico>
   (cd "$1" && npm ci --omit=dev --no-audit --no-fund --loglevel=error && zip -qr "$WORK/$2.zip" . -x ".git/*")
-  az webapp deploy -g "$RG" -n "$2" --src-path "$WORK/$2.zip" --type zip --async true -o none \
+  az webapp deploy -g "$RG" -n "$2" --src-path "$WORK/$2.zip" --type zip --async true --track-status false -o none \
     || echo "(aviso: o Kudu demorou a responder; conferindo se o app subiu...)"
   local url="https://$(host "$2")$3"
   for _ in $(seq 1 36); do
