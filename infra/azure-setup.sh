@@ -105,13 +105,22 @@ for REPO in praticom-backend praticom-gateway-bff praticom-frontend; do
   git clone -q --depth 1 "$GH/$REPO" "$REPO"
 done
 
-deploy() { # deploy <pasta> <webapp>
+# No plano F1 o Kudu costuma responder 502 enquanto ainda extrai o pacote; por isso o envio é assíncrono
+# e o sucesso é confirmado pelo endpoint de saúde do próprio serviço.
+deploy() { # deploy <pasta> <webapp> <caminho-health> <nome-do-servico>
   (cd "$1" && npm ci --omit=dev --no-audit --no-fund --loglevel=error && zip -qr "$WORK/$2.zip" . -x ".git/*")
-  az webapp deploy -g "$RG" -n "$2" --src-path "$WORK/$2.zip" --type zip --async false -o none
+  az webapp deploy -g "$RG" -n "$2" --src-path "$WORK/$2.zip" --type zip --async true -o none \
+    || echo "(aviso: o Kudu demorou a responder; conferindo se o app subiu...)"
+  local url="https://$(host "$2")$3"
+  for _ in $(seq 1 36); do
+    if curl -s --max-time 60 "$url" | grep -q "\"$4\""; then echo "OK: $2 no ar"; return 0; fi
+    sleep 10
+  done
+  echo "ERRO: $2 não respondeu em $url"; return 1
 }
-step "Publicando o microsserviço Financeiro";   deploy praticom-backend/finance-service "$FINANCE"
-step "Publicando o microsserviço Mercadinho";   deploy praticom-backend/market-service "$MARKET"
-step "Publicando o Gateway/BFF";                deploy praticom-gateway-bff "$GATEWAY"
+step "Publicando o microsserviço Financeiro";   deploy praticom-backend/finance-service "$FINANCE" /health finance-service
+step "Publicando o microsserviço Mercadinho";   deploy praticom-backend/market-service "$MARKET" /health market-service
+step "Publicando o Gateway/BFF";                deploy praticom-gateway-bff "$GATEWAY" /api/health praticom-gateway-bff
 
 step "Build e publicação do frontend (Module Federation) no site estático"
 (cd praticom-frontend && npm ci --no-audit --no-fund --loglevel=error && VITE_API_URL="https://$GATEWAY_HOST/api" npm run build >/dev/null)
