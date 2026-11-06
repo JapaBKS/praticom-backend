@@ -9,7 +9,7 @@ Dois microsserviços independentes, cada um com o **próprio banco de dados** (*
 
 | | Endereço |
 |---|---|
-| 🌐 Site (Azure Static Web Apps) | https://SEU-SITE.azurestaticapps.net |
+| 🌐 Site (Azure Storage, site estático) | https://SEU-SITE.z1.web.core.windows.net |
 | 🔀 Gateway/BFF | https://SEU-GATEWAY.azurewebsites.net/docs |
 | 🎥 Vídeo de apresentação (YouTube, não listado) | https://youtu.be/SEU-VIDEO |
 | 📦 Repositório do frontend | https://github.com/SEU-USUARIO/praticom-frontend |
@@ -114,7 +114,7 @@ Regra de negócio que liga os dois: **quando o morador paga uma compra do mercad
 
 ### 2. Restrições
 
-- Nuvem **Azure**: Static Web Apps (frontend), Web App/App Service (Gateway e microsserviços), Azure SQL Database, Azure Service Bus; **MongoDB Atlas** (Free Tier) para o Mercadinho.
+- Nuvem **Azure**: Conta de Armazenamento com site estático (frontend; o Static Web Apps não está disponível nas regiões liberadas pela política da assinatura Azure for Students da PUCPR), Web App/App Service (Gateway e microsserviços), Azure SQL Database, Azure Service Bus; **MongoDB Atlas** (Free Tier) para o Mercadinho.
 - Frontend em **React** com **Module Federation** (microfrontends).
 - Três repositórios públicos: frontend, gateway e backend.
 - O frontend só conversa com o Gateway/BFF, nunca com os microsserviços.
@@ -124,7 +124,7 @@ Regra de negócio que liga os dois: **quando o morador paga uma compra do mercad
 
 ```mermaid
 flowchart LR
-  user([Morador / Síndico]) -->|HTTPS| front[Frontend<br/>Azure Static Web Apps]
+  user([Morador / Síndico]) -->|HTTPS| front[Frontend<br/>Azure Storage - site estático]
   front -->|HTTPS + CORS| gw[API Gateway & BFF<br/>Azure Web App]
   gw -->|x-internal-key| market[Microsserviço Mercadinho<br/>Azure Web App]
   gw -->|x-internal-key| finance[Microsserviço Financeiro<br/>Azure Web App]
@@ -267,7 +267,7 @@ flowchart LR
     r3 -->|Actions| wa3
   end
   subgraph Azure
-    swa[Static Web App<br/>shell + /market + /finance]
+    swa[Storage Account - site estático<br/>shell + /market + /finance]
     wa1[Web App<br/>gateway-bff]
     wa2[Web App<br/>market-service]
     wa3[Web App<br/>finance-service]
@@ -284,7 +284,7 @@ flowchart LR
 
 | Componente | Serviço Azure | Variáveis principais |
 |---|---|---|
-| Frontend | Static Web Apps (Free) | `VITE_API_URL` (no build) |
+| Frontend | Conta de Armazenamento (site estático `$web`) | `VITE_API_URL` (no build) |
 | Gateway/BFF | Web App Node 20 (Linux) | `MARKET_SERVICE_URL`, `FINANCE_SERVICE_URL`, `INTERNAL_API_KEY`, `CORS_ORIGINS` |
 | Mercadinho | Web App Node 20 (Linux) | `MONGODB_URI`, `MONGODB_DB`, `SERVICEBUS_CONNECTION_STRING`, `SERVICEBUS_QUEUE`, `INTERNAL_API_KEY` |
 | Financeiro | Web App Node 20 (Linux) | `SQL_CONNECTION_STRING`, `SERVICEBUS_CONNECTION_STRING`, `SERVICEBUS_QUEUE`, `INTERNAL_API_KEY` |
@@ -309,7 +309,7 @@ flowchart LR
 | D2 | Mercadinho + Financeiro como domínios | Reservas + Financeiro | Menos dependências entre tabelas no código original; o débito em cota já era regra existente |
 | D3 | Hexagonal | Clean/Onion | Separação clara entre portas e adaptadores; fácil testar com adaptadores em memória |
 | D4 | Fila do Service Bus (não tópico) | Chamada HTTP síncrona | Desacopla a venda da disponibilidade do Financeiro |
-| D5 | Remotes publicados no mesmo Static Web App | Um site por remote | Um único deploy e sem CORS para o `remoteEntry.js` |
+| D5 | Remotes publicados no mesmo site estático | Um site por remote | Um único deploy e sem CORS para o `remoteEntry.js` |
 | D6 | Unidades/moradores fixos no BFF | Terceiro microsserviço | Fora do escopo exigido; mantém as telas originais funcionando |
 
 ### 10. Requisitos de qualidade
