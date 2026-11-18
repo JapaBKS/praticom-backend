@@ -4,8 +4,8 @@ Dois microsserviços independentes, cada um com o **próprio banco de dados** (*
 
 | Microsserviço | Domínio | Banco | Publicado em (Azure Web App) | Swagger |
 |---|---|---|---|---|
-| [`market-service`](market-service) | Mercadinho: produtos, estoque, PDV e vendas | **MongoDB Atlas** (Free Tier) | https://praticom-market-dd687f.azurewebsites.net | `/docs` |
-| [`finance-service`](finance-service) | Financeiro: lançamentos, baixa, resumo e inadimplência | **Azure SQL Database** | https://praticom-finance-dd687f.azurewebsites.net | `/docs` |
+| [`market-service`](market-service) | Mercadinho: produtos, estoque, PDV e vendas | **MongoDB Atlas** (Free Tier) | https://praticom-market-dd687f.azurewebsites.net | [Swagger](https://praticom-market-dd687f.azurewebsites.net/docs) |
+| [`finance-service`](finance-service) | Financeiro: lançamentos, baixa, resumo e inadimplência | **Azure SQL Database** | https://praticom-finance-dd687f.azurewebsites.net | [Swagger](https://praticom-finance-dd687f.azurewebsites.net/docs) |
 
 | | Endereço |
 |---|---|
@@ -61,7 +61,7 @@ cp .env.example .env      # deixe MONGODB_URI e SERVICEBUS_CONNECTION_STRING vaz
 npm run dev
 ```
 
-Use a mesma `INTERNAL_API_KEY` nos dois serviços e no Gateway. Os Swaggers ficam em http://localhost:5001/docs e http://localhost:5002/docs (envie o header `x-internal-key`). Com os bancos reais configurados, `npm run seed` cria dados de exemplo.
+Use a mesma `INTERNAL_API_KEY` nos dois serviços e no Gateway. Rodando localmente, os Swaggers ficam em `http://localhost:5001/docs` e `http://localhost:5002/docs` (envie o header `x-internal-key`). Publicados no Azure: [Mercadinho](https://praticom-market-dd687f.azurewebsites.net/docs) e [Financeiro](https://praticom-finance-dd687f.azurewebsites.net/docs). Com os bancos reais configurados, `npm run seed` cria dados de exemplo.
 
 ## Testes
 
