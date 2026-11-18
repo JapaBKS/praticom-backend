@@ -11,7 +11,7 @@ Dois microsserviços independentes, cada um com o **próprio banco de dados** (*
 |---|---|
 | 🌐 Site (Azure Storage, site estático) | https://praticomfrontdd687f.z1.web.core.windows.net |
 | 🔀 Gateway/BFF | https://praticom-gateway-dd687f.azurewebsites.net/docs |
-| 🎥 Vídeo de apresentação (YouTube, não listado) | https://youtu.be/SEU-VIDEO |
+| 🎥 Vídeo de apresentação (YouTube, não listado) | https://youtu.be/1TIt9TzYJps |
 | 📦 Repositório do frontend | https://github.com/JapaBKS/praticom-frontend |
 | 📦 Repositório do Gateway/BFF | https://github.com/JapaBKS/praticom-gateway-bff |
 
